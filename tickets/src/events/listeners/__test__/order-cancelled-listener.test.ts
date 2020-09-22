@@ -1,19 +1,19 @@
 import mongoose from 'mongoose';
 import { Message } from 'node-nats-streaming';
 import { OrderCancelledEvent } from '@lstickets/common';
-import { OrderCancelledListeneer } from '../order-cancelled-listener';
+import { OrderCancelledListener } from '../order-cancelled-listener';
 import { natsWrapper } from '../../../nats-wrapper';
 import { Ticket } from '../../../models/ticket';
 import { updateTicketRouter } from '../../../routes/update';
 
 const setup = async () => {
-  const listener = new OrderCancelledListeneer(natsWrapper.client);
+  const listener = new OrderCancelledListener(natsWrapper.client);
   const orderId = mongoose.Types.ObjectId().toHexString();
 
   const ticket = Ticket.build({
     title: 'conert',
     price: 20,
-    userId: 'asdf'
+    userId: 'asdf',
   });
   ticket.set({ orderId });
   await ticket.save();
@@ -22,12 +22,12 @@ const setup = async () => {
     id: orderId,
     version: 0,
     ticket: {
-      id: ticket.id
-    }
+      id: ticket.id,
+    },
   };
   //@ts-ignore
   const msg: Message = {
-    ack: jest.fn()
+    ack: jest.fn(),
   };
 
   return { msg, data, ticket, orderId, listener };
