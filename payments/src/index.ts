@@ -5,6 +5,7 @@ import { OrderCancelledListener } from './events/listener/order-cancelled-lister
 import { OrderCreatedListener } from './events/listener/order-created-listener';
 
 const start = async () => {
+  console.log('Starting Payment service.');
   if (!process.env.JWT_KEY) {
     throw new Error('JWT_KEY must be defined');
   }
@@ -40,7 +41,7 @@ const start = async () => {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true
+      useCreateIndex: true,
     });
     console.log('Connected to Mongo DB');
   } catch (err) {
