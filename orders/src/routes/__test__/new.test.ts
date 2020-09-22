@@ -5,7 +5,7 @@ import { Order, OrderStatus } from '../../models/order';
 import { Ticket } from '../../models/ticket';
 import { natsWrapper } from '../../nats-wrapper';
 
-it('return an error if the ticket does not exist', async () => {
+it('return an errors if the ticket does not exist', async () => {
   const ticketId = mongoose.Types.ObjectId();
 
   await request(app)
@@ -19,14 +19,14 @@ it('return an error if the ticket is already reserved', async () => {
   const ticket = Ticket.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: 'concert',
-    price: 20
+    price: 20,
   });
   await ticket.save();
   const order = Order.build({
     ticket,
     userId: 'afdsafds',
     status: OrderStatus.Created,
-    expiresAt: new Date()
+    expiresAt: new Date(),
   });
   await order.save();
   await request(app)
@@ -40,7 +40,7 @@ it('reserves a ticket ', async () => {
   const ticket = Ticket.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: 'Movie',
-    price: 30
+    price: 30,
   });
   await ticket.save();
   await request(app)
@@ -54,7 +54,7 @@ it('emits an order created event', async () => {
   const ticket = Ticket.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: 'Movie',
-    price: 30
+    price: 30,
   });
   await ticket.save();
   await request(app)
